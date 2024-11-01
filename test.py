@@ -4,7 +4,7 @@ from ultralytics import YOLO
 import mediapipe as mp
 
 # IF YOUR VIDEO DOESN'T WORK, CHECK HERE AND MAKE SURE THE DIRECTORY MATCHES THE NEW TRAINING DIRECTORY.
-model = YOLO("runs/detect/train/weights/best.pt")
+model = YOLO("runs/detect/train/weights/last.pt")
 # below just uses mediapipe and initializes the hand landmark drawings.
 mp_hands = mp.solutions.hands
 mp_drawing = mp.solutions.drawing_utils
