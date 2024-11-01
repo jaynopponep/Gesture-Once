@@ -1,7 +1,6 @@
 # Learn-ASL (YOLO training)
 
 ## Setting Up
-The following is the Kaggle link for the dataset we are using the train: https://www.kaggle.com/datasets/harshvardhan21/sign-language-detection-using-images </br>
-If this sentence is still here, means we have to split the data into train and eval since the config.yaml requires those splits. For now, you should only be changing the path to your own for your own personal use. I'll just be saving my own path locally for when I git pull. </br>
-### Importing the kaggle dataset
-You can either use kagglehub regularly or Kaggle CLI to install your dataset on your local machine. Or even better, you can use the API (I'm not prioritizing that right now personally). Once you either use Kagglehub or Kaggle CLI, you should be given a path to the dataset, and add the path with the /data at the end to the config.yaml file. Environment should be properly set now, more instructions and progress to come later.  
+The following is the Kaggle link for the dataset we are using the train: https://public.roboflow.com/object-detection/american-sign-language-letters </br>
+Data is pre-labeled so we get to skip that step, unless this dataset doesn't work well. However, we simply have to just train the YOLOv11 model on it, I already have the configurations set up. </br>
+You actually don't have to do anything except just run train.py to start training, and then we have to figure out the best way to configure test.py to actually test out the model's performance.
