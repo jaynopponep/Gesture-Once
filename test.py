@@ -52,7 +52,8 @@ while True:
             x_min, x_max = int(min(x_vals)), int(max(x_vals))
             y_min, y_max = int(min(y_vals)), int(max(y_vals))
             # adjusts the x-y values for the bounding box to be closer to landmark
-            x1, y1, x2, y2 = x_min, y_min, x_max, y_max
+            pad = 40 # apply a padding value to increase the box’s size
+            x1, y1, x2, y2 = x_min - pad, y_min - pad, x_max + pad, y_max + pad
 
         # cv2.rectangle() draws the box and cv2.putText() puts the actual text next to the box
         cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
