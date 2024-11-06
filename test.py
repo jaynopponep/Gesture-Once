@@ -2,6 +2,7 @@ import cv2
 import numpy as np
 from ultralytics import YOLO
 import mediapipe as mp
+from time import time
 
 # IF YOUR VIDEO DOESN'T WORK, CHECK HERE AND MAKE SURE THE DIRECTORY MATCHES THE NEW TRAINING DIRECTORY.
 model = YOLO("runs/detect/train3/weights/best.pt")
@@ -17,6 +18,35 @@ labels_dict = {0: 'A', 1: 'B', 2: 'C', 3: 'D', 4: 'E', 5: 'F', 6: 'G', 7: 'H', 8
 
 # enables video capturing
 cap = cv2.VideoCapture(0)
+
+start_time = time()     # Used to calculate when 5 seconds have elapsed to log the highest predicted label
+max_pred = (None, 0)    # Tuple to hold the highest predicted label and its corresponding confidence score
+
+def log_highest_pred(start_time, max_pred, label, conf, results):
+    '''
+    Logs the highest predicted label to a text file (for the time being) after 5 seconds. 
+    This function will be used to log ASL characters to an interface for the user.
+    '''
+    # Calculate elapsed time thus far
+    elapsed_time = time() - start_time 
+
+    # If no landmarks were detected or time exceeded 5.5 seconds, reset start time and max prediction to 0 
+    if results.multi_hand_landmarks is None or elapsed_time > 5.5:
+        return time(), (None, 0)
+
+    # Update the max prediction and label if there is a higher prediction 
+    if conf > max_pred[1]:          
+        max_pred = (label, conf)
+    
+    # Log the max predicted label if 5 seconds has elapsed
+    if elapsed_time >= 5:  
+        # Log to a file for now for debugging (EVENTUALLY CHANGE IT TO PRINT TO THE INTERFACE) and reset time and max prediction
+        with open("logs.txt", 'a') as f:    
+            f.write(f"{max_pred[0]} ({max_pred[1]:.2f}), elapsed_time = {elapsed_time:2f}\n")
+        start_time = 0            
+        max_pred = (None, 0)
+    
+    return start_time, max_pred
 
 while True:
     # reads each frame
@@ -40,6 +70,9 @@ while True:
         conf = box.conf[0]
         # uses label dictionary to get correct letter based on prediction on the box
         label = labels_dict.get(cls, f"Class {cls}")
+
+        # log the highest predicted label to an interface (TXT FILE FOR TIME BEING)
+        start_time, max_pred = log_highest_pred(start_time, max_pred, label, conf, results)
 
         # below handles the landmark coordinates and configurations
         if results.multi_hand_landmarks:
