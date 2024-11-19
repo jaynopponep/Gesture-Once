@@ -1,8 +1,8 @@
 task: detect
 mode: train
 model: yolo11n.pt
-data: C:\Users\Noppo\GitHub-Repos\Learn-ASL\American-Sign-Language-Letters-1/data.yaml
-epochs: 20
+data: C:\Users\Noppo\GitHub-Repos\Learn-ASL\CTP-Fork-ASL-AV3MW-1/data.yaml
+epochs: 110
 time: null
 patience: 100
 batch: 16
