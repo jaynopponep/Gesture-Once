@@ -5,12 +5,12 @@ import mediapipe as mp
 from time import time
 
 # IF YOUR VIDEO DOESN'T WORK, CHECK HERE AND MAKE SURE THE DIRECTORY MATCHES THE NEW TRAINING DIRECTORY.
-model = YOLO("runs/detect/train/weights/last.pt")
+model = YOLO("runs/detect/train2/weights/last.pt")
 # below just uses mediapipe and initializes the hand landmark drawings.
 mp_hands = mp.solutions.hands
 mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
-hands = mp_hands.Hands(static_image_mode=True, min_detection_confidence=0.3)
+hands = mp_hands.Hands(static_image_mode=True, min_detection_confidence=0.5, min_tracking_confidence=0.5)
 
 # exact labels from train.py below to correctly display prediction
 labels_dict = {0: 'A', 1: 'B', 2: 'C', 3: 'D', 4: 'E', 5: 'F', 6: 'G', 7: 'H', 8: 'I', 9: 'J', 10: 'K', 11: 'L', 12: 'M', 13: 'N', 14: 'O', 15: 'P', 16: 'Q', 17: 'R', 18: 'S', 19: 'T', 20: 'U', 21: 'V', 22:
@@ -59,10 +59,10 @@ while True:
     results = hands.process(frame_rgb)
 
     # YOLO prediction here based on frame given
-    predictions = model.predict(frame, conf=0.3)
+    predictions = model.predict(frame, conf=0.5)
     # MIGHT have to tweak the 'conf' param^ if you run into errors
-    boxes = predictions[0].boxes  # get the bounding boxes
-
+    #boxes = non_max_suppression(predictions[0].boxes, conf_thres=0.5, iou_thres=0.4)  # get the bounding boxes
+    boxes = predictions[0].boxes
     for box in boxes:
         # sets up the box sizes.
         x1, y1, x2, y2 = map(int, box.xyxy[0])
@@ -87,6 +87,8 @@ while True:
             # adjusts the x-y values for the bounding box to be closer to landmark
             pad = 40 # apply a padding value to increase the box’s size
             x1, y1, x2, y2 = x_min - pad, y_min - pad, x_max + pad, y_max + pad
+            if x1 > x_max or x2 < x_min or y1 > y_max or y2 < y_min:
+                continue
 
         # cv2.rectangle() draws the box and cv2.putText() puts the actual text next to the box
         cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
