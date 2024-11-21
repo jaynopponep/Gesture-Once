@@ -5,12 +5,12 @@ import mediapipe as mp
 from time import time
 
 # IF YOUR VIDEO DOESN'T WORK, CHECK HERE AND MAKE SURE THE DIRECTORY MATCHES THE NEW TRAINING DIRECTORY.
-model = YOLO("runs/detect/train2/weights/last.pt")
+model = YOLO("runs/detect/train3/weights/last.pt")
 # below just uses mediapipe and initializes the hand landmark drawings.
 mp_hands = mp.solutions.hands
 mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
-hands = mp_hands.Hands(static_image_mode=True, min_detection_confidence=0.5, min_tracking_confidence=0.5)
+hands = mp_hands.Hands(static_image_mode=True, min_detection_confidence=0.4, min_tracking_confidence=0.4)
 
 # exact labels from train.py below to correctly display prediction
 labels_dict = {0: 'A', 1: 'B', 2: 'C', 3: 'D', 4: 'E', 5: 'F', 6: 'G', 7: 'H', 8: 'I', 9: 'J', 10: 'K', 11: 'L', 12: 'M', 13: 'N', 14: 'O', 15: 'P', 16: 'Q', 17: 'R', 18: 'S', 19: 'T', 20: 'U', 21: 'V', 22:
