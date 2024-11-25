@@ -1,30 +1,37 @@
 .navbar {
-    position: sticky;
-    top: 0;
-    background-color: #333;
-    padding: 10px;
-    z-index: 1000;
-    display: flex;
-    justify-content: center;
-  }
-  
-  .navbar-list {
-    list-style: none;
-    display: flex;
-    gap: 20px;
-    margin: 0;
-    padding: 0;
-  }
-  
-  .navbar-item a {
-    color: white;
-    text-decoration: none;
-    padding: 8px 16px;
-  }
-  
-  .navbar-item a:hover {
-    background-color: #555;
-    color: white;
-    border-radius: 4px;
-  }
-  
+  position: sticky;
+  top: 0;
+  background-color: #E0E1DD;
+  padding: 5px 20px; /* Reduce padding to make the navbar less tall */
+  z-index: 1000;
+  display: flex;
+  align-items: center; /* Align logo and links vertically */
+  justify-content: space-between; /* Space the logo and links */
+  width: 100%; /* Ensure the navbar spans the entire width */
+  box-sizing: border-box; /* Include padding in the width calculation */
+}
+
+.navbar-logo img {
+  height: 30px; /* Adjust logo size */
+  width: auto; /* Maintain aspect ratio */
+}
+
+.navbar-list {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar-item a {
+  color: #0D1B2A;
+  text-decoration: none;
+  padding: 5px 10px; /* Adjust padding for links */
+}
+
+.navbar-item a:hover {
+  background-color: #415A77;
+  color: white;
+  border-radius: 4px;
+}
