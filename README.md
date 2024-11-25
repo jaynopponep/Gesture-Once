@@ -1,10 +1,5 @@
 # Learn-ASL (YOLO training)
 
-## Setting Up
-The following is the Kaggle link for the dataset we are using the train: https://public.roboflow.com/object-detection/american-sign-language-letters </br>
-Data is pre-labeled so we get to skip that step, unless this dataset doesn't work well. However, we simply have to just train the YOLOv11 model on it, I already have the configurations set up. </br>
-You actually don't have to do anything except just run train.py to start training, and then we have to figure out the best way to configure test.py to actually test out the model's performance.
-
 ## Overview
 Learn-ASL is a machine learning project designed to recognize American Sign Language (ASL) gestures and translate them into text using the YOLOv11 object detection model and MediaPipe for hand landmark detection. This project aims to bridge communication gaps for ASL users by providing an intuitive and efficient sign-to-text conversion tool.
 
@@ -24,7 +19,18 @@ Object Detection with YOLOv11: Recognizes ASL letters and gestures from a live v
 Hand Landmarks with MediaPipe: Enhances gesture recognition by aligning bounding boxes to hand landmarks.
 Gesture Logging: Logs the highest predicted gesture with confidence scores to a text file for debugging and potential user interfaces.
 
+## Use Cases:
+
+### Real-Time Conversion
+The system can be engineered to detect ASL gestures using a camera which converts sign language into text in real-time. This would enable deaf individuals to communicate more easily with those who do not understand ASL. Additionally, the system can be extended to translate ASL videos into text for users who do not know ASL.
+
+### Educational and Training Purposes:
+The system can serve as a learning platform for users who are practicing sign langauge. It can be developed so that it can evaluate a user’s sign language accuracy and provide instant feedback.
+
 ## Future Work
 Interface Development: Build a GUI for real-time gesture-to-text translation.
 Dataset Expansion: Incorporate more ASL gestures for robust recognition.
 Performance Optimization: Optimize logging and frame processing speed.
+
+## Contributors
+Jay Noppone Pornpitaksuk, Claudio Perinuzzi, Loyd Flores, Kenneth Guillont
