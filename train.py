@@ -7,13 +7,13 @@ load_dotenv()
 api_key = os.getenv('ROBOFLOW_API_KEY')
 rf = Roboflow(api_key)
 project = rf.workspace("learnasl").project("ctp-fork-asl-av3mw")
-version = project.version(1)
+version = project.version(4)
 dataset = version.download("yolov8")
 
 def main():
     torch.cuda.empty_cache()
     # load the model
-    model = YOLO("yolov8n.pt")
+    model = YOLO("runs/detect/train-v3/weights/last.pt")
 
     # training
     train_results = model.train(

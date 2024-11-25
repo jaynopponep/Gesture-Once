@@ -2,6 +2,7 @@
 datasets
 config.yaml
 CTP-Fork-ASL-AV3MW-1
-CTP-Fork-ASL-AV3MW-3
+CTP-Fork-ASL-AV3MW-4
 .env
 env
+logs.txt

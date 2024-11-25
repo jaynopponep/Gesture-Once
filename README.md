@@ -1,7 +1,8 @@
 # Learn-ASL (YOLO training)
 
 ## Overview
-Learn-ASL is a machine learning project designed to recognize American Sign Language (ASL) gestures and translate them into text using the YOLOv11 object detection model and MediaPipe for hand landmark detection. This project aims to bridge communication gaps for ASL users by providing an intuitive and efficient sign-to-text conversion tool.
+Learn-ASL is a machine learning project designed to recognize American Sign Language (ASL) gestures and translate them into text using the YOLOv8 object detection model and MediaPipe for hand landmark detection. 
+This project aims to bridge communication gaps for ASL users by providing an educational and efficient sign-to-text conversion tool for learning basic ASL.
 
 ## Dataset
 Dataset Link: [ASL Letters Dataset](https://public.roboflow.com/object-detection/american-sign-language-letters)
@@ -11,11 +12,10 @@ Dataset Link: [ASL Letters Dataset](https://public.roboflow.com/object-detection
 - [OpenCv2](https://docs.opencv.org/4.x/d6/d00/tutorial_py_root.html)
 - [ultralytics](https://github.com/ultralytics/ultralytics)
 - [mediapipe](https://ai.google.dev/edge/mediapipe/solutions/guide)
-- [time](https://docs.python.org/3/library/time.html)
 - [roboflow](https://docs.roboflow.com/)
 
 ## Features
-Object Detection with YOLOv11: Recognizes ASL letters and gestures from a live video feed.
+Object Detection with YOLOv8: Recognizes ASL letters and gestures from a live video feed.
 Hand Landmarks with MediaPipe: Enhances gesture recognition by aligning bounding boxes to hand landmarks.
 Gesture Logging: Logs the highest predicted gesture with confidence scores to a text file for debugging and potential user interfaces.
 
