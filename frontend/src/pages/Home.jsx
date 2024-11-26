@@ -41,12 +41,12 @@ const Home = () => {
       <div className="header">
         <div className="landing-page-image">
           <img
-            className="landingImae"
+            className="landingImage"
             src={landingPageImage}
             alt="Description of the image"
           />
         </div>
-        <div className="content-descripion">
+        <div className="content-description">
           <h1>Make Learning ASL more accessible!</h1>
         </div>
       </div>

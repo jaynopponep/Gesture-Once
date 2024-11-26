@@ -3,7 +3,7 @@ import Card from "../components/Card";
 
 import loyd from "../assets/devs/loyd.png";
 import ken from "../assets/devs/ken.png";
-import claduio from "../assets/devs/claduio.png";
+import claudio from "../assets/devs/claudio.png";
 import jay from "../assets/devs/jay.png";
 
 const About = () => {
@@ -13,7 +13,7 @@ const About = () => {
         <div className="card-container">
           <Card image={loyd} name="Loyd Flores" college="Queens College, CUNY" />
           <Card image={ken} name="Kenneth Guillont" college="Hunter College, CUNY" />
-          <Card image={claduio} name="Claudio Perinuzzi" college="Queens College, CUNY" />
+          <Card image={claudio} name="Claudio Perinuzzi" college="Queens College, CUNY" />
           <Card image={jay} name="Jay Noppone" college="City College, CUNY" />
         </div>
       </div>
