@@ -1,18 +1,18 @@
-from flask import Flask, request, jsonify
-from ultralytics import YOLO
-import mediapipe as mp
+from flask import Flask, Response, jsonify
+from flask_cors import CORS  # Import Flask-CORS
 import cv2
 import numpy as np
+from ultralytics import YOLO
+import mediapipe as mp
 from time import time
-from PIL import Image
-import io
+import threading
 
 app = Flask(__name__)
+CORS(app)
+
 model = YOLO("../runs/detect/train-v3/weights/last.pt")
 mp_hands = mp.solutions.hands
-mp_drawing = mp.solutions.drawing_utils
-mp_drawing_styles = mp.solutions.drawing_styles
-hands = mp_hands.Hands(static_image_mode=True, min_detection_confidence=0.4, min_tracking_confidence=0.4)
+hands = mp_hands.Hands(static_image_mode=True, min_detection_confidence=0.5, min_tracking_confidence=0.5)
 
 labels_dict = {
     0: 'A', 1: 'B', 2: 'C', 3: 'D', 4: 'E', 5: 'F', 6: 'G', 7: 'H', 8: 'I', 9: 'J', 10: 'K', 11: 'L', 12: 'M',
@@ -20,62 +20,84 @@ labels_dict = {
     25: 'Z', 26: 'hello', 27: 'iloveyou', 28: 'what-'
 }
 
+cap = cv2.VideoCapture(0)
+highest_prediction = {"label": None, "confidence": 0.0}
+highest_prediction_lock = threading.Lock()
+label_confidence_map = {}
 start_time = time()
-max_pred = (None, 0)
 
-def log_highest_pred(label, conf):
-    """
-    Logs the highest predicted label to a text file after 5 seconds.
-    """
-    global start_time, max_pred
+
+def update_highest_prediction(label, confidence):
+    global highest_prediction, label_confidence_map, start_time
     elapsed_time = time() - start_time
 
-    if elapsed_time > 5.5:
-        start_time = time()
-        max_pred = (None, 0)
+    with highest_prediction_lock:
+        # update new highest label
+        if label in label_confidence_map:
+            label_confidence_map[label] = max(label_confidence_map[label], confidence)
+        else:
+            label_confidence_map[label] = confidence
 
-    if conf > max_pred[1]:
-        max_pred = (label, conf)
+        # change label after 2s
+        if elapsed_time >= 2:
+            # max label after 2 seconds
+            highest_label = max(label_confidence_map, key=label_confidence_map.get)
+            highest_confidence = label_confidence_map[highest_label]
 
-    if elapsed_time >= 5:
-        with open("logs.txt", 'a') as f:
-            f.write(f"{max_pred[0]} ({max_pred[1]:.2f}), elapsed_time = {elapsed_time:.2f}\n")
-        start_time = time()
-        max_pred = (None, 0)
+            highest_prediction["label"] = highest_label
+            highest_prediction["confidence"] = highest_confidence
 
-@app.route('/process_frame', methods=['POST'])
-def process_frame():
+            # reset to get a new label
+            label_confidence_map.clear()
+            start_time = time()
+
+
+# mediapipe configuration from test.py
+def generate_frames():
+    global highest_prediction
+
+    while True:
+        ret, frame = cap.read()
+        if not ret:
+            break
+
+        frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        results = hands.process(frame_rgb)
+
+        predictions = model.predict(frame, conf=0.5)
+        boxes = predictions[0].boxes
+
+        for box in boxes:
+            x1, y1, x2, y2 = map(int, box.xyxy[0])
+            cls = int(box.cls[0])
+            conf = float(box.conf[0])
+            label = labels_dict.get(cls, f"Class {cls}")
+            update_highest_prediction(label, conf)
+            cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
+            cv2.putText(frame, f"{label} ({conf:.2f})", (x1, y1 - 10),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+
+        _, buffer = cv2.imencode('.jpg', frame)
+        frame = buffer.tobytes()
+        yield (b'--frame\r\n'
+               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+
+
+@app.route('/video_feed')
+def video_feed():
+    return Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
+
+
+@app.route('/get_highest_prediction', methods=['GET'])
+def get_highest_prediction():
     """
-    Process a single video frame sent from the client, predict ASL characters, and log the highest prediction.
+    Serve the current highest prediction.
     """
-    global max_pred
-
-    if 'image' not in request.files:
-        return jsonify({'error': 'No image provided'}), 400
-
-    file = request.files['image']
-    image = Image.open(io.BytesIO(file.read())).convert("RGB")
-    frame = np.array(image)
-
-    frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-
-    results = hands.process(frame_rgb)
-
-    results_yolo = model(frame)
-    if results_yolo[0].boxes.data.shape[0] > 0:
-        box = results_yolo[0].boxes.data[0]
-        label_idx = int(box[5])
-        conf = float(box[4])
-
-        label = labels_dict.get(label_idx, "Unknown")
-
-        log_highest_pred(label, conf)
-
-        return jsonify({'label': label, 'confidence': conf}), 200
-
-    return jsonify({'error': 'No hand detected or prediction available'}), 200
+    global highest_prediction
+    with highest_prediction_lock:
+        print(highest_prediction)
+        return jsonify(highest_prediction), 200
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
-
+    app.run(host="0.0.0.0", port=5000, debug=True)
