@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Navbar from "./components/Navbar"; 
-import RealTime from "./pages/RealTime";
+import RealTime from "./pages/Realtime";
 import Home from "./pages/Home";
 import Learn from "./pages/Learn"; 
 import About from "./pages/About";
