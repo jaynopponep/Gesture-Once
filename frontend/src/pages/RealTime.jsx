@@ -4,7 +4,8 @@ import "./RealTime.css";
 function RealTime() {
     const videoStreamUrl = "http://127.0.0.1:5000/video_feed";
     const highestPredictionUrl = "http://127.0.0.1:5000/get_highest_prediction";
-    const [highestPrediction, setHighestPrediction] = useState({ label: "None", confidence: 0.0 });
+    const [predictions, setPredictions] = useState([]);
+    const [lastPrediction, setLastPrediction] = useState(null);
 
     useEffect(() => {
         const fetchHighestPrediction = async () => {
@@ -12,10 +13,25 @@ function RealTime() {
                 const response = await fetch(highestPredictionUrl);
                 if (response.ok) {
                     const data = await response.json();
-                    setHighestPrediction({
-                        label: data.label || "None",
-                        confidence: data.confidence || 0.0,
-                    });
+                    // only add NEW predictions and not nones
+                    if (data.label !== "None" &&
+                        (!lastPrediction ||
+                            data.label !== lastPrediction.label ||
+                            Math.abs(data.confidence - lastPrediction.confidence) > 0.1)) {
+
+                        const newPrediction = {
+                            label: data.label,
+                            confidence: data.confidence,
+                            timestamp: new Date().toLocaleTimeString()
+                        };
+
+                        setPredictions(prevPredictions => [
+                            ...prevPredictions,
+                            newPrediction
+                        ]);
+
+                        setLastPrediction(newPrediction);
+                    }
                 } else {
                     console.error("Failed to fetch highest prediction");
                 }
@@ -26,52 +42,39 @@ function RealTime() {
 
         const intervalId = setInterval(fetchHighestPrediction, 1000);
         return () => clearInterval(intervalId);
-    }, []);
+    }, [lastPrediction]);
 
     return (
-        <div className="content-containers">
-            <header className="App-header">
-                {/* grab video stream from model_api.py backend */}
-                <img
-                    src={videoStreamUrl}
-                    alt="Hand Detection Stream"
-                    style={{
-                        position: "absolute",
-                        marginLeft: "auto",
-                        marginRight: "auto",
-                        left: 0,
-                        right: 0,
-                        textAlign: "center",
-                        zIndex: 9,
-                        width: 640,
-                        height: 480,
-                    }}
-                />
-                <div
-                    style={{
-                        position: "absolute",
-                        bottom: 20,
-                        left: "50%",
-                        transform: "translateX(-50%)",
-                        backgroundColor: "rgba(0, 0, 0, 0.5)",
-                        color: "white",
-                        padding: "10px 20px",
-                        borderRadius: "10px",
-                        fontSize: "24px",
-                        textAlign: "center",
-                    }}
-                >
-                    {highestPrediction.label !== "None"
-                        ? `Highest Prediction: ${highestPrediction.label} (${highestPrediction.confidence.toFixed(2)})`
-                        : "Waiting for prediction..."}
-                </div>
-            </header>
+        <div className="app-header">
+            {/* VIDEO */}
+            <img
+                src={videoStreamUrl}
+                alt="Hand Detection Stream"
+                className="video-stream"
+            />
+
+            {/* PREDICTIONS */}
+            <div className="predictions-container">
+                {predictions.length === 0 ? (
+                    "Waiting for predictions..."
+                ) : (
+                    <div className="predictions-wrapper">
+                        {predictions.map((prediction, index) => (
+                            <div
+                                key={index}
+                                className="prediction-item-inline"
+                            >
+                                {prediction.label}
+                            </div>
+                        ))}
+                    </div>
+                )}
+            </div>
         </div>
     );
 }
 
 export default RealTime;
-
 
 //   const labelMap = {
 //     1: { name: "Hello", color: "red" },

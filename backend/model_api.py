@@ -12,7 +12,7 @@ CORS(app)
 
 model = YOLO("../runs/detect/train-v3/weights/last.pt")
 mp_hands = mp.solutions.hands
-hands = mp_hands.Hands(static_image_mode=True, min_detection_confidence=0.5, min_tracking_confidence=0.5)
+hands = mp_hands.Hands(static_image_mode=True, min_detection_confidence=0.4, min_tracking_confidence=0.4)
 
 labels_dict = {
     0: 'A', 1: 'B', 2: 'C', 3: 'D', 4: 'E', 5: 'F', 6: 'G', 7: 'H', 8: 'I', 9: 'J', 10: 'K', 11: 'L', 12: 'M',
@@ -64,7 +64,7 @@ def generate_frames():
         frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         results = hands.process(frame_rgb)
 
-        predictions = model.predict(frame, conf=0.5)
+        predictions = model.predict(frame, conf=0.4)
         boxes = predictions[0].boxes
 
         for box in boxes:

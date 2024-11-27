@@ -2,7 +2,7 @@ import { useState } from "react";
 import "./Learn.css";
 
 import a from "../assets/alphabet/a.png";
-import b from "../assets/alphabet/b.png";
+import b from "../assets/alphabet/o.png";
 import c from "../assets/alphabet/c.png";
 
 const Learn = () => {

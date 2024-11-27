@@ -5,7 +5,7 @@ import mediapipe as mp
 from time import time
 
 # IF YOUR VIDEO DOESN'T WORK, CHECK HERE AND MAKE SURE THE DIRECTORY MATCHES THE NEW TRAINING DIRECTORY.
-model = YOLO("../runs/detect/train-v3/weights/last.pt")
+model = YOLO("../runs/detect/train-v2/weights/last.pt")
 # below just uses mediapipe and initializes the hand landmark drawings.
 mp_hands = mp.solutions.hands
 mp_drawing = mp.solutions.drawing_utils
