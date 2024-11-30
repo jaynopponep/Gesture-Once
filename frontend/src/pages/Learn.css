@@ -1,38 +1,80 @@
-.content-learn {
+.learn-content-container {
     margin: 10%;
     display: flex;
     justify-content: space-evenly;
-    align-items: center;
-    gap: 20px; 
+    align-items: flex-start;
+    gap: 20px;
+    height: 80%;
 }
 
-.model {
-    flex-grow: 2; 
-    flex-basis: 0; 
-    background-color: #F0EBD8; 
+.learn-model-section {
+    position: relative;
+    flex-grow: 2;
+    flex-basis: 0;
+    background-color: #F0EBD8;
     padding: 20px;
-    border-radius: 8px; 
+    border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    height: 480px;
 }
 
-.content {
+.learn-local-video,
+.learn-backend-stream {
+    width: 540px;
+    height: 440px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.learn-local-video {
+    opacity: 0.7;
+    position: absolute;
+    z-index: 5;
+}
+
+.learn-backend-stream {
+    position: absolute;
+    z-index: 6;
+}
+
+.learn-record-button {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    padding: 10px 20px;
+    background-color: #ff4136;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.learn-record-button:hover {
+    background-color: #ff6b6b;
+}
+
+.learn-content-section {
     display: flex;
+    flex-direction: column;
     gap: 10px;
     flex-grow: 1;
-    flex-basis: 0; 
-    background-color: #F0EBD8; 
-    padding: 20px; 
-    border-radius: 8px; 
+    flex-basis: 0;
+    background-color: #F0EBD8;
+    padding: 20px;
+    border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.content-controller {
+.learn-content-controller {
     display: flex;
     flex-direction: column;
     gap: 10px;
 }
 
-.dropdown {
+.learn-dropdown {
     padding: 10px;
     font-size: 16px;
     border: 1px solid #ccc;
@@ -42,21 +84,21 @@
     transition: border-color 0.3s;
 }
 
-.dropdown:hover {
-    border-color: #4CAF50; /* Green border on hover */
+.learn-dropdown:hover {
+    border-color: #4CAF50;
 }
 
-.selected-letter {
+.learn-selected-letter {
     margin-top: 10px;
     font-weight: bold;
     color: #333;
 }
 
-.content-output {
+.learn-content-output {
     text-align: center;
 }
 
-.content-output img {
+.learn-content-output img {
     width: 100px;
     height: auto;
     margin-top: 10px;
