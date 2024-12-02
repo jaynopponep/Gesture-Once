@@ -76,15 +76,21 @@ def generate_frames():
             cls = int(box.cls[0])
             conf = float(box.conf[0])
             label = labels_dict.get(cls, f"Class {cls}")
+
+            # Update the prediction in the background
             update_highest_prediction(label, conf)
+
+            # Draw bounding box and label (exclude confidence score)
             cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
-            cv2.putText(frame, f"{label} ({conf:.2f})", (x1, y1 - 10),
+            cv2.putText(frame, f"{label}", (x1, y1 - 10),  # Only show the label
                         cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
 
         _, buffer = cv2.imencode('.jpg', frame)
         frame = buffer.tobytes()
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+
+
 
 
 @app.route('/video_feed')
