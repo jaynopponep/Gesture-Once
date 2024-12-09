@@ -83,7 +83,7 @@ def generate_frames():
             # Draw bounding box and label (exclude confidence score)
             cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
             cv2.putText(frame, f"{label}", (x1, y1 - 10),  # Only show the label
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 2)
 
         _, buffer = cv2.imencode('.jpg', frame)
         frame = buffer.tobytes()
