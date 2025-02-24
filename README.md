@@ -1,4 +1,4 @@
-# Gesture Once (YOLO training)
+# Gesture Once
 
 ## Overview
 Gesture Once (p.k.a. Learn-ASL) is a machine learning project designed to recognize American Sign Language (ASL) gestures and translate them into text using the YOLOv8 object detection model and MediaPipe for hand landmark detection. 
