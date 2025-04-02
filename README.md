@@ -12,6 +12,9 @@ Gesture Logging: Logs the highest predicted gesture with confidence scores to a 
 ## Demo
 ![Gesture Once](gesture_once.gif)
 
+## IMPORTANT NOTES
+Although it'd be awesome to have this deployed so others can freely test the model, deploying it will be computationally expensive, and users may run into network issues regardless. However, setting this up locally is extremely easy! Instructions are available below. 
+
 ## Tools and Libraries
 - [OpenCV2](https://docs.opencv.org/4.x/d6/d00/tutorial_py_root.html)
 - [Ultralytics](https://github.com/ultralytics/ultralytics)

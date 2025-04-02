@@ -1,5 +1,5 @@
 from flask import Flask, Response, jsonify
-from flask_cors import CORS  # Import Flask-CORS
+from flask_cors import CORS  
 import cv2
 import numpy as np
 from ultralytics import YOLO
