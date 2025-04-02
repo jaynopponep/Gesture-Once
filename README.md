@@ -9,6 +9,9 @@ Object Detection with YOLOv8: Recognizes ASL letters and gestures from a live vi
 Hand Landmarks with MediaPipe: Enhances gesture recognition by aligning bounding boxes to hand landmarks.
 Gesture Logging: Logs the highest predicted gesture with confidence scores to a text file for debugging and potential user interfaces.
 
+## Demo
+![Gesture Once](gesture_once.gif)
+
 ## Tools and Libraries
 - [OpenCV2](https://docs.opencv.org/4.x/d6/d00/tutorial_py_root.html)
 - [Ultralytics](https://github.com/ultralytics/ultralytics)
